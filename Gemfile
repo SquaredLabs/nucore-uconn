@@ -6,7 +6,6 @@ git_source(:github) { |repo_name| "git@github.com:#{repo_name}.git" }
 
 ## base
 gem "rails", "4.2.10"
-gem "protected_attributes"
 gem "config"
 
 ## database
@@ -15,6 +14,7 @@ group :oracle do
   gem "ruby-oci8"
   gem "activerecord-oracle_enhanced-adapter"
 end
+gem "where-or"
 
 ## auth
 gem "cancancan"
@@ -78,7 +78,7 @@ gem "split_accounts", "~> 0.0.1", path: "vendor/engines/split_accounts"
 gem "synaccess_connect"
 
 group :development do
-  gem "bullet"
+  gem "bullet" # Detect N+1s and recommends eager loading
   gem "coffeelint"
   gem "haml_lint"
   gem "letter_opener"

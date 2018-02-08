@@ -26,9 +26,6 @@ Nucore::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
 
-  # Raise exception on mass assignment protection for Active Record models
-  config.active_record.mass_assignment_sanitizer = :logger #:strict
-
   # Do not compress assets
   config.assets.compress = false
 
@@ -44,7 +41,7 @@ Nucore::Application.configure do
   config.action_view.raise_on_missing_translations = true
 
   config.after_initialize do
-    Bullet.enable = true
+    Bullet.enable = false
     Bullet.bullet_logger = true
     Bullet.rails_logger = true
   end
