@@ -48,6 +48,25 @@ class FacilitiesController < ApplicationController
     render layout: "application"
   end
 
+  # GET /facilities/list
+  def list
+    # show list of operable facilities for current user, and admins manage all facilities
+    @active_tab = "manage_facilites"
+    if session_user.administrator?
+      @facilities = Facility.alphabetized
+      flash.now[:notice] = "No facilities have been added" if @facilities.empty?
+    else
+      @facilities = operable_facilities
+      raise ActiveRecord::RecordNotFound if @facilities.empty?
+      if @facilities.size == 1
+        redirect_to dashboard_facility_path(@facilities.first)
+        return
+      end
+    end
+
+    render layout: "application"
+  end
+
   # GET /facilities/:facility_id/manage
   def manage
     @active_tab = "admin_facility"

@@ -8,3 +8,4 @@
     = render "facility_fields", { f: f }
   .form-actions
     = f.button :submit, t("admin.shared.add", model: Facility.model_name.human)
+    = link_to t("shared.cancel"), controller: :facilities, action: :list

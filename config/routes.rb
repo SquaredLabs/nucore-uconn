@@ -51,6 +51,10 @@ Nucore::Application.routes.draw do
   end
 
   resources :facilities, except: [:delete], path: I18n.t("facilities_downcase") do
+    collection do
+      get "list"
+    end
+
     member do
       get "manage"
       get "dashboard"
