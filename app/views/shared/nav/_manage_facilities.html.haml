@@ -6,8 +6,3 @@
     %ul.dropdown-menu
       - (current_user.try(:administrator?) ? Facility.all : menu_facilities).each do |facility|
         %li= link_to facility.name, dashboard_facility_path(facility)
-      - if current_user.try(:administrator?)
-        %li
-          = link_to ({controller: "facilities", action: "new"}) do
-            = fa_icon "plus"
-            Add Facility
