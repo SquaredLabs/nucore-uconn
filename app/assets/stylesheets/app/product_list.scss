@@ -1,0 +1,7 @@
+.product_list_container{
+    display: flex;
+    justify-content: space-between;
+}
+.product_list{
+    flex: 0 0 calc(25% - 2em);
+}
