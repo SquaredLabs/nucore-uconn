@@ -2,8 +2,4 @@
 .navbar.navbar-static-top.hide-from-print.visible-with-nav
   .navbar-inner
     .container
-      - if session_user
-        = render "/shared/nav/nav_links"
-      - else
-        = form_tag global_search_path, class: "navbar-search pull-right visible-with-nav" do
-          = text_field_tag :search, nil, placeholder: t("global_search.search"), class: "search-query span2"
+      = render "/shared/nav/nav_links"
