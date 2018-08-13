@@ -14,29 +14,22 @@ Follow these instructions to set up the Oracle database to run in Docker, but th
 ### Start an Oracle container
 
 ```
-# Run the Oracle image as a container named oracle, storing data
-# in the directory oracle/, which is ignored in git.
-# When you run this for the first time, it will take a while to download
-# the image and initialize the database.
-#
-# When the output in the terminal includes a line like:
-#
-#   Done ! The database is ready for use .
-#
-# you can use the database
-docker run \
-  --interactive \
-  --name oracle \
-  --publish 1521:1521 \
-  --tty \
-  --volume oracle:/ORCL \
-  store/oracle/database-enterprise:12.2.0.1
+mkdir $HOME/oracle_data
+docker run -p 1521:1521 --name nucore_db -v $HOME/oracle_data:/u01/app/oracle sath89/oracle-12c
+# This will take several minutes as the database initializes.
+# Wait for "Database ready to use. Enjoy! ;)"
 ```
 
-When you no longer need the database, in another terminal tab run:
+`$HOME/oracle_data` is just a recommended location where your oracle data files will
+be saved. This will allow them to remain persistent even across re-creations of
+the container.
+
+* Next time you want to start the server, run:
 
 ```
-docker stop oracle
+docker start nucore_db
+# wait, it sometimes takes a few minutes to come up
+# "ORA-01033: ORACLE initialization or shutdown in progress" means wait.
 ```
 
 The next time you need the database, start it just by running:
@@ -131,10 +124,24 @@ SQL>
 
 1. Import the dump, replacing DUMPFILE with the name of your dump file, and REMAP_SCHEMA with your database’s username if necessary:
 
+* Install into `/Applications`
+
+#### Restore from a backup
+
+Run `bundle exec rake db:oracle_drop_severe`. This will ensure that your database
+is clean. Without it the import might skip tables due to them already existing.
+
+Assuming you used `$HOME/oracle_data` as the volume location when you did `docker run`:
+
+Copy the `.dmp` file to `$HOME/oracle_data/admin/xe/dpdump/`
+
+Get a bash shell inside your container:
+
 ```
-impdp \
-  system/Oradoc_db1 \
-  DIRECTORY=DATA_PUMP_DIR \
-  DUMPFILE=expdp_schema_COR1PRD_201810021913.dmp \
-  REMAP_SCHEMA=bc_nucore:nucore_open_development
+docker exec -it nucore_db bash
+```
+
+Run this (replacing the DUMPFILE filename and the second part of REMAP_SCHEMA with your database's username):
+```
+impdp system/oracle@//localhost:1521/xe DIRECTORY=data_pump_dir DUMPFILE=expdp_schema_COR1PRD_201708191913.dmp REMAP_SCHEMA=bc_nucore:nucore_nu_development
 ```
