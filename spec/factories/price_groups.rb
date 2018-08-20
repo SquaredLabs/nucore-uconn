@@ -22,7 +22,6 @@ FactoryBot.define do
     trait :cancer_center do
       global
       admin_editable { true }
-      sequence(:name, "AAAAAA") { |n| "Cancer Center #{n}" }
     end
   end
 

@@ -100,6 +100,22 @@ FactoryBot.define do
       end
     end
 
+    trait :purchaser do
+      transient do
+        account { nil }
+        administrator { nil }
+      end
+
+      after(:create) do |user, evaluator|
+        AccountUser.grant(
+          user,
+          AccountUser::ACCOUNT_PURCHASER,
+          evaluator.account,
+          evaluator.administrator,
+        )
+      end
+    end
+
     trait :senior_staff do
       transient { facility { nil } }
 
