@@ -7,12 +7,6 @@ class AccountUser < ApplicationRecord
   belongs_to :created_by_user, class_name: "User", foreign_key: :created_by
   has_many :log_events, as: :loggable
 
-  validates :created_by, presence: true
-  validates :user_role, inclusion: { in: ->(record) { record.class.user_roles }, message: "is invalid" }
-  validates :user_id, uniqueness: { scope: [:account_id, :deleted_at] }, unless: :deleted_at?
-  validates :user_role, uniqueness: { scope: [:account_id, :deleted_at] }, if: -> { owner? && !deleted_at? }
-  validate :validate_account_has_owner
-
   ACCOUNT_PURCHASER = "Purchaser"
   ACCOUNT_OWNER = "Owner"
   ACCOUNT_ADMINISTRATOR = "Business Administrator"

@@ -2,4 +2,6 @@
 
 class InstrumentPricePoliciesController < PricePoliciesController
 
+class InstrumentPricePoliciesController < PricePoliciesController
+
 end
