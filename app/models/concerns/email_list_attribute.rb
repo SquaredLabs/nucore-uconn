@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Include this module in a model to add that attribute that acts like an array
 # but is backed by a comma-separated string in the database.
 #

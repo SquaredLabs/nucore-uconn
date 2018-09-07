@@ -1,13 +1,11 @@
-# frozen_string_literal: true
-
 class CancellationMailer < BaseMailer
 
   def notify_facility(order_detail)
     @order_detail = order_detail
     @product = order_detail.product
-    if @product.cancellation_email_recipients.any?
+    if @product.cancellation_notification_recipients.any?
       mail(
-        to: @product.cancellation_email_recipients,
+        to: @product.cancellation_notification_recipients,
         subject: text("views.cancellation_mailer.notify_facility.subject", facility: @order_detail.facility, order_detail: @order_detail),
       )
     end

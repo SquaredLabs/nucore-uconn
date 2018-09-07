@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ProductNotificationsController < ApplicationController
 
   admin_tab :all
@@ -26,7 +24,7 @@ class ProductNotificationsController < ApplicationController
     if @product.update(notification_params)
       redirect_to({ action: :show }, notice: text("success"))
     else
-      render :edit
+      render :index
     end
   end
 
@@ -36,7 +34,7 @@ class ProductNotificationsController < ApplicationController
     params.require(:product).permit(
       :training_request_contacts,
       :order_notification_recipient,
-      :cancellation_email_recipients,
+      :cancellation_notification_recipients,
     )
   end
 
