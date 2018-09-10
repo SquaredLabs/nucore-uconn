@@ -2,10 +2,4 @@
 
 module ReconcilableAccount
 
-  extend ActiveSupport::Concern
-
-  module ClassMethods
-
-module ReconcilableAccount
-
 end
