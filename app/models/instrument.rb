@@ -19,7 +19,7 @@ class Instrument < Product
 
   email_list_attribute :cancellation_email_recipients
 
-  email_list_attribute :cancellation_notification_recipients
+  email_list_attribute :cancellation_email_recipients
 
   # Validations
   # --------
