@@ -10,7 +10,7 @@ RSpec.describe AutoExpireReservation, :time_travel do
   let(:instrument) { create(:setup_instrument, min_reserve_mins: 1, relay: create(:relay_syna)) }
 
   describe "#perform" do
-    context "a started reservation" do
+    context "a new reservation" do
       let!(:reservation) do
         create(:purchased_reservation, :yesterday, actual_start_at: 1.hour.ago,
                                                    product: instrument)
