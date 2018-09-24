@@ -44,26 +44,6 @@ RSpec.describe AutoExpireReservation, :time_travel do
       end
     end
 
-    context "a started reservation that is already in the problem queue" do
-      let!(:reservation) do
-        create(:purchased_reservation, :yesterday, actual_start_at: 1.hour.ago,
-                                                   product: instrument)
-      end
-
-      before do
-        reservation.product.price_policies.destroy_all
-        create :instrument_usage_price_policy, price_group: reservation.product.facility.price_groups.last, usage_rate: 1, product: reservation.product
-
-        reservation.actual_end_at = nil
-        reservation.order_detail.complete!
-        expect(reservation.order_detail).to be_problem
-      end
-
-      it "does not trigger an email" do
-        expect { action.perform }.not_to change(ActionMailer::Base.deliveries, :count)
-      end
-    end
-
     context "an unpurchased reservation" do
       let!(:reservation) do
         create(:setup_reservation, :yesterday, actual_start_at: 1.hour.ago,
