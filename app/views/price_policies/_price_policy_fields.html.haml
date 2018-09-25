@@ -16,13 +16,10 @@
     - @price_policies.each do |price_policy|
       - price_group = price_policy.price_group
       = fields_for "price_policy_#{price_group.id}", price_policy do |pp|
-        - row_class = []
-        - row_class << "js--masterInternalRow" if price_group.master_internal?
-        - row_class << "js--adjustmentRow" unless price_group.external? || price_group.master_internal?
-        %tr{class: row_class}
+        %tr
           %td= price_group.name
           %td= price_group.type_string
-          %td= pp.check_box :can_purchase, class: "js--canPurchase"
+          %td= pp.check_box :can_purchase, class: "can_purchase"
           - if price_group.external?
             %td.centered
               = pp.text_field :unit_cost, value: number_to_currency(price_policy.unit_cost, unit: "", delimiter: ""),
@@ -32,13 +29,14 @@
             %td.centered
               = pp.text_field :unit_cost, value: number_to_currency(price_policy.unit_cost, unit: "", delimiter: ""),
                 size: 8,
-                data: { target: ".js--unitRate" }
+                class: "master_unit_cost"
             %td
           - else
             %td.centered
               %span.unit_cost
               = pp.hidden_field :unit_cost, value: number_to_currency(price_policy.unit_cost, unit: "", delimiter: ""),
-                class: "js--unitRate", readonly: true
+                class: "unit_cost"
             %td.centered
               = pp.text_field :unit_subsidy, value: number_to_currency(price_policy.unit_subsidy, unit: "", delimiter: ""),
-                size: 8
+                size: 8,
+                class: "unit_subsidy"

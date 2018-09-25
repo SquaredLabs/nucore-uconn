@@ -2,8 +2,7 @@
   = pp.label :usage_rate, t("price_policies.rate"), class: "normal-weight"
   = pp.text_field :usage_rate, value: display_usage_rate(price_group, price_policy),
     size: 8,
-    class: "#{price_group.master_internal? ? 'master_usage_cost' : ''} usage_rate",
-    data: { target: ".js--usageRate" }
+    class: "#{price_group.master_internal? ? 'master_usage_cost' : ''} usage_rate"
 
 - if local_assigns[:minimum_cost]
   %td
@@ -13,7 +12,7 @@
       data: { target: ".js--minimumCost" }
 
 - if local_assigns[:cancellation]
-  %td.js--cancellationCostContainer
+  %td.js--full_cancellation_cost_container
     = pp.label :cancellation_cost, t("price_policies.amount"), class: "normal-weight"
     = pp.text_field :cancellation_cost, value: number_to_currency(price_policy.cancellation_cost, unit: "", delimiter: ""),
       size: 8,
