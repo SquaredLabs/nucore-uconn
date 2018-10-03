@@ -21,6 +21,12 @@ spec:
         release: {{ .Release.Name }}
         container: auto-cancel
     spec:
+    {{- with .Values.image.imagePullSecrets }}
+      imagePullSecrets:
+      {{- range . }}
+        - name: {{ . }}
+      {{- end }}
+    {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

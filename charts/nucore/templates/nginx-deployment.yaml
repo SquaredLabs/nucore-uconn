@@ -31,9 +31,15 @@ spec:
         - name: nginx-conf
           configMap:
             name: {{ include "nucore.fullname" . }}-nginx-conf
+    {{- with .Values.nginx.image.imagePullSecrets }}
+      imagePullSecrets:
+      {{- range . }}
+        - name: {{ . }}
+      {{- end }}
+    {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.nginx.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}"
           imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
           volumeMounts:
             - name: nginx-conf

@@ -1,0 +1,21 @@
+pipeline:
+  build:
+    image: plugins/docker
+    repo: developers.s3.core.uconn.edu/nucore
+    registry: developers.s3.core.uconn.edu
+    secrets: [ docker_username, docker_password ]
+    tags:
+      - ${DRONE_COMMIT_SHA}
+  deploy:
+    image: quay.io/ipedrazas/drone-helm
+    skip_tls_verify: true
+    chart: ./charts/nucore
+    release: "${DRONE_REPO_NAME}-${DRONE_BRANCH}"
+    values: "image.imagePullSecrets[0]=developers.s3.core.uconn.edu,image.repository=developers.s3.core.uconn.edu/nucore,image.tag=${DRONE_COMMIT_SHA},image.pullPolicy=IfNotPresent,ingress.hosts[0]=${DRONE_BRANCH}.${DRONE_REPO_NAME}.minikube.dev"
+    wait: true
+    timeout: 900
+    recreate_pods: true
+    service_account: tiller
+    secrets: [api_server, kubernetes_token]
+    when:
+      event: [push, tag, deployment]

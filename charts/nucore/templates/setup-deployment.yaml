@@ -25,6 +25,12 @@ spec:
         - name: assets
           persistentVolumeClaim:
             claimName: {{ .Values.persistence.assets.existingClaim | default (list (include "nucore.fullname" .) "assets" | join "-") }}
+    {{- with .Values.image.imagePullSecrets }}
+      imagePullSecrets:
+      {{- range . }}
+        - name: {{ . }}
+      {{- end }}
+    {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
