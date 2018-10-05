@@ -21,8 +21,6 @@ module SecureRooms
         return if user_exempt_from_purchase?
 
         find_or_create_order
-        Rails.logger.info("[SecureRooms] order id #{order.id}; order detail id #{@order_detail.id}")
-        Rails.logger.info("[SecureRooms] occupancy.order_completable? = #{occupancy.order_completable?}")
         complete_order if occupancy.order_completable?
 
         Rails.logger.info("[SecureRooms] Exiting SecureRooms::AccessHandlers::OrderHandler#process")
@@ -45,15 +43,11 @@ module SecureRooms
       end
 
       def complete_order
-        Rails.logger.info("[SecureRooms] Entered SecureRooms::AccessHandlers::OrderHandler#complete_order")
         if occupancy.orphaned_at?
-          Rails.logger.info("Processing branch occupancy.orphaned_at?")
           MoveToProblemQueue.move!(order_detail)
         else
-          Rails.logger.info("[SecureRooms] Processing branch else")
           order_detail.complete!
         end
-        Rails.logger.info("[SecureRooms] Exiting SecureRooms::AccessHandlers::OrderHandler#complete_order")
       end
 
       def create_order
