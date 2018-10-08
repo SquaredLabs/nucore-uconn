@@ -54,11 +54,11 @@ class PricePolicyUpdater
     @params["price_policy_#{price_group.id}"]&.permit(*permitted_params) || { can_purchase: false }
   end
 
-  def permitted_common_params
-    @params.permit(:charge_for, :note, :created_by_id)
+  def initial_price_group_attributes(price_group)
+    @params["price_policy_#{price_group.id}"]&.permit(*allowed_attributes) || { can_purchase: false }
   end
 
-  def permitted_params
+  def allowed_attributes
     [
       :can_purchase,
       :usage_rate,
@@ -68,7 +68,7 @@ class PricePolicyUpdater
       :unit_cost,
       :unit_subsidy,
     ].tap do |attributes|
-      attributes << :full_price_cancellation if SettingsHelper.feature_on?(:charge_full_price_on_cancellation)
+      attributes << :charge_full_price_on_cancellation if SettingsHelper.feature_on?(:charge_full_price_on_cancellation)
     end
   end
 
