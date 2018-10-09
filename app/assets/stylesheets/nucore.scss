@@ -439,7 +439,6 @@ textarea.wide {
   box-sizing: border-box;
 }
 
-/* Use/Manage CSS */
 body {
   background: #ffffff; /* Old browsers */
   background: -moz-linear-gradient(top, #ffffff 53%, #e4e4e4 100%); /* FF3.6-15 */
@@ -449,29 +448,29 @@ body {
 }
 .manage-mode {
   background: #ffffff; /* Old browsers */
-  background: -moz-linear-gradient(top, #ffffff 53%, $manageGradient 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, #ffffff 53%,$manageGradient 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, #ffffff 53%, $manageGradient 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='$manageGradient',GradientType=0 ); /* IE6-9 */
+  background: -moz-linear-gradient(top, #ffffff 53%, $light-blue 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #ffffff 53%,$light-blue 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #ffffff 53%, $light-blue 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='$light-blue',GradientType=0 ); /* IE6-9 */
 }
 html,body{
   min-height: 100%;
 }
 
 body nav .navbar-inner .container .nav, .nav-tabs{
-  border-bottom: 1px solid $useColor;
+  border-bottom: 1px solid $orange;
   min-height: 40px;
 }
 
 .manage-mode nav .navbar-inner .container .nav, 
 .manage-mode .nav-tabs {
-  border-color: $manageColor;
+  border-color: $blue;
 }
 
 .alert-info {
   background-color: transparent;
   border-color: transparent;
-  color: $manageColor;
+  color: $blue;
   font-size: 24px;
   line-height: 1em;
 }
@@ -504,7 +503,7 @@ body nav .navbar-inner .container .nav, .nav-tabs{
 }
 
 .nav li.active a{
-  border: 1px solid $useColor !important;
+  border: 1px solid $orange !important;
   border-radius: 4px 4px 0 0;
   border-bottom-color: transparent !important;
   background-color: white !important;
@@ -512,7 +511,7 @@ body nav .navbar-inner .container .nav, .nav-tabs{
 }
 
 .manage-mode .nav li.active a{
-  border-color: $manageColor !important;
+  border-color: $blue !important;
   border-bottom-color: transparent !important;
 }
 
@@ -526,7 +525,7 @@ body nav .navbar-inner .container .nav, .nav-tabs{
 }
 
 #use_tab a{
-  border: solid $useColor 1px !important;
+  border: solid $orange 1px !important;
   border-radius: 8px;
   padding: 1px 1px;
   margin-top: 9px;
@@ -538,12 +537,12 @@ body nav .navbar-inner .container .nav, .nav-tabs{
 
 #use_tab.active a{
   text-shadow: none;
-  background-color: $useColor !important;
+  background-color: $orange !important;
   color: white;
 }
 
 .manage-mode #use_tab.active a{
-  background-color: $manageColor !important;
+  background-color: $blue !important;
 }
 
 .manage-button {
@@ -560,12 +559,12 @@ body nav .navbar-inner .container .nav, .nav-tabs{
 }
 
 .manage-mode .manage-button a{
-  border-color: $manageColor !important;
-  background-color: $manageColor !important;
+  border-color: $blue !important;
+  background-color: $blue !important;
   text-shadow: none !important;
   color: white !important;
 }
 
 .manage-mode .manage-button.active a{
-  background-color: $manageColor !important;
+  background-color: $blue !important;
 }
