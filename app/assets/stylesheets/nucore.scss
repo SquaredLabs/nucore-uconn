@@ -439,10 +439,6 @@ textarea.wide {
   box-sizing: border-box;
 }
 
-/*
-  UCONN Design Changes: Nav
-*/
-
 body {
   background: #ffffff; /* Old browsers */
   background: -moz-linear-gradient(top, #ffffff 53%, #e4e4e4 100%); /* FF3.6-15 */
@@ -450,126 +446,77 @@ body {
   background: linear-gradient(to bottom, #ffffff 53%,#e4e4e4 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e4e4e4',GradientType=0 ); /* IE6-9 */
 }
-
 .manage-mode {
   background: #ffffff; /* Old browsers */
-  background: -moz-linear-gradient(top, #ffffff 53%, $manageGradient 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, #ffffff 53%,$manageGradient 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, #ffffff 53%, $manageGradient 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='$manageGradient',GradientType=0 ); /* IE6-9 */
+  background: -moz-linear-gradient(top, #ffffff 53%, $light-blue 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #ffffff 53%,$light-blue 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #ffffff 53%, $light-blue 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='$light-blue',GradientType=0 ); /* IE6-9 */
 }
-
 html,body{
   min-height: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
 }
 
 body nav .navbar-inner .container .nav, .nav-tabs{
-  border-bottom: 1px solid $useColor;
+  border-bottom: 1px solid $orange;
   min-height: 40px;
 }
 
 .manage-mode nav .navbar-inner .container .nav, 
 .manage-mode .nav-tabs {
-  border-color: $manageColorDark;
+  border-color: $blue;
 }
 
 .alert-info {
   background-color: transparent;
   border-color: transparent;
-  color: $manageColorDark;
+  color: $blue;
   font-size: 24px;
   line-height: 1em;
 }
 
 .navbar-inner {
+  box-shadow: none !important;
   background: none;
   border: none;
 }
 
-.navbar-static-top .navbar-inner {
-  box-shadow: none;
+.brand{
+  font-family: inherit !important;
 }
 
-nav ul.nav > li.active, nav  > 
-li.active, nav ul.nav > li:hover > 
-li {
-  border:none;
-  margin-top: 0;
+.nav li:hover{
+  border: none !important;
+  margin-top: 0 !important;
+}
+
+.nav li a{
+  padding: 13px;
+  text-decoration: none;
+  color: black;
+  transition: ease 0.3s all;
+}
+.nav li.active{
+  border:none !important;
+  margin-top: 0 !important;
   margin-bottom: -1px;
 }
 
-nav ul.nav > li.active, nav  > 
-li.active, nav ul.nav > li:hover, nav > 
-li:hover {
-  border: none;
-  margin-top: 0;
-  background-color: white;
-}
-
-.container > .nav > li > a , .nav.nav-tabs > li > a{
-  padding: 11px 12px 11px 12px;
-  text-decoration: none;
-  color: $useColorDark;
-  transition: ease 0.3s all;
-}
-
-.manage-mode .container > .nav > li > a , .manage-mode .nav.nav-tabs > li > a{
-  color: $manageColorDark;
-}
-
-.container > .nav > li:hover > a {
-  text-shadow: 0 0 0.5px $useColorDark;
-  color: $useColorDark;
-}
-
-.manage-mode .container > .nav > li:hover > a {
-  text-shadow: 0 0 0.5px $manageColorDark;
-}
-
-.navbar .nav > .active > a:hover{
-  background: none;
-  background-color: $headerBackgroundColor;
-  box-shadow: none;
-  color: $useColorDark;
-}
-
-.manage-mode .navbar .nav > .active > a:hover{
-  color: $manageColorDark;
-}
-
-.manage-mode .container > .nav > li:hover > a {
-  color: $manageColorDark;
-}
-
-.nav > li.active a {
-  border: 1px solid $useColor;
+.nav li.active a{
+  border: 1px solid $orange !important;
   border-radius: 4px 4px 0 0;
-  border-bottom-color: transparent;
-  background-color: $headerBackgroundColor;
-  font-weight: bold;
+  border-bottom-color: transparent !important;
+  background-color: white !important;
+  box-shadow: none !important;
 }
 
-.navbar .nav > li.active > a {
-  box-shadow: none;
-  background-color: $headerBackgroundColor;
-  color: $useColorDark;
+.manage-mode .nav li.active a{
+  border-color: $blue !important;
+  border-bottom-color: transparent !important;
 }
 
-.manage-mode .navbar .nav > li.active > a, .manage-mode li.active > a {
-  border-color: $manageColorDark;
-  color: $manageColorDark;
-  border-bottom-color: transparent;
-}
-
-#use_tab, .container > .nav > li.manage-button a{
+#use_tab, .manage-button {
   text-align: center;
-  color: $headerColor;
-}
-
-.manage-mode .container > .nav > li.manage-button:hover a{
-  color: $headerBackgroundColor;
 }
 
 #use_tab {
@@ -577,37 +524,25 @@ li:hover {
   height: 23px;
 }
 
-#use_tab > a {
-  border: solid $useColor 1px;
+#use_tab a{
+  border: solid $orange 1px !important;
   border-radius: 8px;
   padding: 1px 1px;
   margin-top: 9px;
 }
 
-.manage-mode #use_tab > a {
-  border-color: $grey;
+.manage-mode #use_tab a{
+  border-color: $grey !important;
 }
 
-#use_tab.active a {
+#use_tab.active a{
   text-shadow: none;
-  background-color: $useColor;
-  color: $headerBackgroundColor;
+  background-color: $orange !important;
+  color: white;
 }
 
-#use_tab.active > a:hover {
-  background-color: transparent;
-  box-shadow: none;
-  color: $darkGrey;
-}
-
-#use_tab.active > a:hover {
-  background-color: transparent;
-  box-shadow: none;
-  color: $darkGrey;
-}
-
-.manage-mode #use_tab.active a {
-  background-color: $manageColorDark;
+.manage-mode #use_tab.active a{
+  background-color: $blue !important;
 }
 
 .manage-button {
@@ -616,273 +551,20 @@ li:hover {
   height: 23px;
 }
 
-.container .nav .manage-button > a {
-  border: solid $grey 1px;
+.manage-button a{
+  border: solid $grey 1px !important;
   border-radius: 8px;
-  padding: 1px 1px;
+  padding: 1px 1px !important;
   margin-top: 9px;
 }
 
-.manage-mode .nav > li.manage-button > a {
-  border-color: $manageColorDark ;
-  background-color: $manageColorDark;
-  text-shadow: none;
-  color: $headerBackgroundColor;
+.manage-mode .manage-button a{
+  border-color: $blue !important;
+  background-color: $blue !important;
+  text-shadow: none !important;
+  color: white !important;
 }
 
-.manage-mode .nav .manage-button.active a {
-  background-color: $manageColorDark ;
-}
-
-.nav.pull-right {
-  letter-spacing: $fontSpacing;
-}
-
-/*
-  UCONN Design Changes: Table
-*/
-
-td, tr {
-  transition: ease 0.2s all;
-  border-bottom: solid  $grey 1.2px;
-}
-
-.table-striped tbody > tr:nth-child(2n+1) {
-  td {
-    background-color: $tableRowOdd;
-  }
-  th {
-    background-color: $tableRowOdd;
-  }
-} 
-
-.table {
-  td {
-    background-color: $tableRowEven;
-  }
-
-  th {
-    background-color: $tableRowEven;
-  }
-}
-
-.table tbody > tr:hover, table-striped tbody > tr:hover {
-  td, th {
-    background-color: $tableRowHover;
-  }
-}
-
-thead {
-  color: $grey;
-  text-transform: uppercase;
-  font-weight: bold;
-}
-
-/*
-  UCONN Design Changes: Buttons
-*/
-
-.btn, .btn-add {
-  transition: ease 0.2s all;
-  border: solid $useColorDark 1px;
-  outline: none;
-  background: none;
-  background-color: transparent;
-  border-radius: 8px;
-  box-shadow: none;
-  color: $useColorDark;
-  text-shadow: none;
-}
-
-.btn-primary {
-  font-weight: bold;
-  border-width: 1.5px;
-}
-
-.btn:hover, .btn-add:hover {
-  transition: ease 0.2s all;
-  background-color: rgba(0, 0, 0, 0.05);
-  color: $useColorDark;
-}
-
-.btn-primary:hover {
-  background-color: $useColorDark;
-  color: $headerBackgroundColor;
-}
-
-.manage-mode {
-  .btn, .btn-add {
-    border-color: $manageColorDark;
-    color: $manageColorDark;
-  }
-
-  .btn:hover, .btn-add:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-    color: $manageColorDark;
-  } 
-
-  .btn-primary:hover {
-    background-color: $manageColorDark;
-    color: $headerBackgroundColor;
-  }
-}
-
-/*
-  UCONN Design Changes: Form
-*/
-
-input {
-  transition: ease 0.2s all;
-}
-
-label {
-  text-transform: uppercase;
-  color: $darkGrey;
-}
-
-textarea:focus, input[type="text"]:focus {
-  border-color: $darkGrey;
-  box-shadow: none;
-}
-
-.chosen-container-multi .chosen-choices {
-  border: solid $grey 1px;
-  border-radius: 2px;
-  background: none;
-  transition: ease 0.1s all;
-
-  li.search-choice {
-    transition: ease 0.1s all;
-    border: solid grey 1px;
-    border-radius: 8px;
-    background: none;
-    color: $darkGrey;
-  }
-}
-
-.chosen-container-active .chosen-choices {
-  box-shadow: none;
-  border-radius: 8px 8px 0 0;
-  li.search-choice {
-    color: $headerColor;
-    background: $lighterGrey;
-  }
-}
-
-.chosen-container-multi.chosen-disabled .chosen-choices {
-  background: $lighterGrey;
-}
-
-.chosen-container-single .chosen-single {
-  background: none;
-  box-shadow: none;
-  border-radius: 8px;
-}
-
-.chosen-container-active.chosen-with-drop .chosen-single {
-  background: white;
-  box-shadow: none;
-  border-radius: 8px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-}
-
-.chosen-container-single .chosen-search input[type="text"] {
-    border-radius: 8px;
-}
-
-.chosen-container .chosen-drop {
-  border-radius: 0 0 8px 8px;
-  box-shadow: none;
-}
-
-.chosen-single {
-  color: $headerColor;
-}
-
-.chosen-container .chosen-results {
-  li {
-    transition: ease 0.2s all;
-    color: $headerColor;
-    font-size: 14px;
-    line-height: 1.9em;
-    padding: 2px 15px;
-  }
-
-  li.active-result {
-    box-shadow: none;
-    background: none;
-    border: none;
-    border-radius: 8px;
-  }
-
-  li.highlighted {
-    background: none;
-    background-color: rgba(0,0,0,0.05);
-    color: $headerColor;
-  }
-}
-
-select {
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  padding: 0 0 0 0.5em;
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA3klEQVRIS+3VMU9CMRTF8d8zBL+aizoQFhx0kUk33RzdYMNFXUFnYeGrYYyaJiUxJHDLSxodbNKpfeffc9/pbaPyaCrr+3OA++z4rtT5Pg5GuMnCY9yWQEoBE1xhlUUP8YDrCBIB0vojLvGO0yz4hm4JJAKcYYoPHGOZAUdYoIMBXrc5iQAHeMlzviFygj7O8dkWEJU4XI8chALRhn9AVKHf70VRTHu4wFfbmKZLNKt50dLBnna0imcMd/2I0phWa3Y/D1e1Xa9BCZJG0VuQNpaWKMx72xS1Fl5/WN3BN+AgJhnZQlq4AAAAAElFTkSuQmCC');
-  background-position: calc(100% - .5rem), 100% 0;
-  background-size: 1.5em 1.5em;
-  background-repeat: no-repeat;
-}
-
-textarea, input[type="text"], 
-input[type="password"], input[type="datetime"], 
-input[type="datetime-local"], input[type="date"], 
-input[type="month"], input[type="time"], 
-input[type="week"], input[type="number"], 
-input[type="email"], input[type="url"], 
-input[type="search"], input[type="tel"], 
-input[type="color"], .uneditable-input {
-  border-radius: 8px;
-  padding: 2px 8px;
-}
-
-.input-prepend .add-on:first-child, 
-.input-prepend .btn:first-child, 
-.input-prepend .btn-add:first-child {
-    border-radius: 8px 0 0 8px;
-}
-
-.input-append input, 
-.input-append select, 
-.input-append .uneditable-input, 
-.input-prepend input, 
-.input-prepend select, 
-.input-prepend .uneditable-input {
-  border-radius: 0 8px 8px 0;
-}
-
-input[type="text"].order_detail_quantity {
-  border-radius: 2px;
-}
-
-select::-ms-expand {
-  display: none;
-}
-
-.well {
-  border-radius: 8px;
-  box-shadow: none;
-  border: none;
-  background: white;
-}
-
-input[type="file"]{
-  border-radius: 8px;
-  padding: 1em;
-  cursor: pointer;
-  margin-top: 1em;
-}
-
-.thumbnail_preview {
-  display: flex;
-  margin: 1em 0
+.manage-mode .manage-button.active a{
+  background-color: $blue !important;
 }
