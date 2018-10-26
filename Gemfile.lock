@@ -419,7 +419,7 @@ GEM
       nenv (~> 0.1)
       shellany (~> 0.0)
     numerizer (0.1.1)
-    oj (3.7.0)
+    oj (3.6.12)
     orm_adapter (0.5.0)
     paper_trail (10.0.1)
       activerecord (>= 4.2, < 5.3)
