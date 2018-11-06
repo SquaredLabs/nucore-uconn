@@ -46,56 +46,34 @@ nav ul.nav > li:hover {
   Sidebar navigation
 */
 .sidebar-nav {
+  @extend .well;
+  @extend .well-small;
 
-  margin: 0 0 11px 0;
+  margin-bottom: 10px;
   background-color: $lighterGrey;
-  border-radius: 8px;
-  padding: 12px 7px 11px 7px;
+  border-radius: 4px;
   box-shadow: none;
   border:none;
   list-style-type: none;
 
+  
+
   li {
-    line-height: 1.9em;
-    font-size: 14px;
+    line-height: 2em;
+    color: manageColor;
     border: none;
-    border-radius: 8px;
-    padding: 2px 15px;
+    border-radius: 4px;
     a {
       border: none;
-      letter-spacing: $fontSpacing;
     }
     &.nav-header {
       line-height: 2em;
       margin-top: 0;
     }
     &.divider {
-      margin: 0.4em 1.4em;
-      padding: 0;
+      margin: 0.5em 1px;
       border: solid $grey 0.5px;
     }
-  }
-}
-
-.sidebar-nav > li > a{
-  color: $useColorDark;
-}
-
-.manage-mode .sidebar-nav > li > a{
-  color: $manageColorDark;
-}
-
-.sidebar-nav > li.active {
-  background-color: $useColorLight;
-  a {
-    color: $sidebarActiveColor;
-  }
-}
-
-.manage-mode .sidebar-nav > li.active {
-  background-color: $manageColorLight;
-  a {
-    color:$sidebarActiveColor;
   }
 }
 
@@ -487,16 +465,16 @@ body nav .navbar-inner .container .nav, .nav-tabs{
   box-shadow: none;
 }
 
-nav ul.nav > li.active, nav ul.sidebar-nav > 
-li.active, nav ul.nav > li:hover, nav ul.sidebar-nav > 
+nav ul.nav > li.active, nav  > 
+li.active, nav ul.nav > li:hover > 
 li {
   border:none;
   margin-top: 0;
   margin-bottom: -1px;
 }
 
-nav ul.nav > li.active, nav ul.sidebar-nav > 
-li.active, nav ul.nav > li:hover, nav ul.sidebar-nav > 
+nav ul.nav > li.active, nav  > 
+li.active, nav ul.nav > li:hover, nav > 
 li:hover {
   border: none;
   margin-top: 0;
@@ -510,7 +488,7 @@ li:hover {
   transition: ease 0.3s all;
 }
 
-.nav li.active a, .sidebar-nav li.active a {
+.nav > li.active a {
   border: 1px solid $useColor;
   border-radius: 4px 4px 0 0;
   border-bottom-color: transparent;
@@ -522,7 +500,7 @@ li:hover {
   background-color: white;
 }
 
-.manage-mode .nav li.active a, .manage-mode .sidebar-nav li.active a {
+.manage-mode > .nav li.active a, .manage-mode li.active a {
   border-color: $manageColor;
   border-bottom-color: transparent;
 }
