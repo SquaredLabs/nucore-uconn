@@ -1,8 +1,8 @@
 GIT
-  remote: https://github.com/thoughtbot/shoulda-matchers.git
-  revision: f951455f0f66ebc09a80bb20089b1b253c2ac0fb
+  remote: git@github.com:thoughtbot/shoulda-matchers.git
+  revision: dfbcdc703fd416963973c6a318edcb20aec90535
   specs:
-    shoulda-matchers (4.0.0.rc1)
+    shoulda-matchers (4.0.0)
       activesupport (>= 4.2.0)
 
 PATH
@@ -40,13 +40,6 @@ PATH
       rails (>= 4.2)
 
 PATH
-  remote: vendor/engines/nucore_kfs
-  specs:
-    nucore_kfs (0.0.2)
-      rails (~> 5.0.7.1)
-      savon (~> 2.12.0)
-
-PATH
   remote: vendor/engines/projects
   specs:
     projects (0.0.1)
@@ -73,12 +66,6 @@ PATH
   remote: vendor/engines/split_accounts
   specs:
     split_accounts (0.0.1)
-
-PATH
-  remote: vendor/engines/uconn_cider
-  specs:
-    uconn_cider (0.1.0)
-      rails (~> 5.0.7, >= 5.0.7.1)
 
 GEM
   remote: https://rubygems.org/
@@ -126,9 +113,6 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     airbrussh (1.3.1)
       sshkit (>= 1.6.1, != 1.7.0)
-    akami (1.3.1)
-      gyoku (>= 0.4.0)
-      nokogiri
     arel (7.1.4)
     ast (2.4.0)
     awesome_nested_set (3.1.4)
@@ -152,14 +136,13 @@ GEM
       sshkit (>= 1.9.0)
     capistrano-bundler (1.5.0)
       capistrano (~> 3.1)
-      sshkit (~> 1.2)
-    capistrano-chruby (0.1.2)
-      capistrano (~> 3.0)
-      sshkit (~> 1.3)
     capistrano-rails (1.4.0)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
-    capybara (3.12.0)
+    capistrano-rvm (0.1.2)
+      capistrano (~> 3.0)
+      sshkit (~> 1.2)
+    capybara (3.13.2)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
@@ -170,7 +153,7 @@ GEM
     capybara-email (3.0.1)
       capybara (>= 2.4, < 4.0)
       mail
-    celluloid (0.17.4)
+    celluloid (0.17.3)
       celluloid-essentials
       celluloid-extras
       celluloid-fsm
@@ -230,7 +213,7 @@ GEM
       coffee-script
       execjs
       json
-    concurrent-ruby (1.1.5)
+    concurrent-ruby (1.1.4)
     config (1.7.1)
       activesupport (>= 3.0)
       deep_merge (~> 1.2.1)
@@ -243,7 +226,7 @@ GEM
     delayed_job_active_record (4.1.3)
       activerecord (>= 3.0, < 5.3)
       delayed_job (>= 3.0, < 5)
-    devise (4.6.1)
+    devise (4.5.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 6.0)
@@ -301,9 +284,9 @@ GEM
       kostya-sigar (~> 2.0.0)
       state_machines
       thor
-    eye-patch (1.1.0)
+    eye-patch (0.5.1)
       chronic_duration
-      eye (>= 0.10.0)
+      eye (>= 0.6.2)
     factory_bot (4.11.1)
       activesupport (>= 3.0.0)
     factory_bot_rails (4.11.1)
@@ -329,7 +312,7 @@ GEM
     font-awesome-rails (4.7.0.4)
       railties (>= 3.2, < 6.0)
     formatador (0.2.5)
-    globalid (0.4.2)
+    globalid (0.4.1)
       activesupport (>= 4.2.0)
     guard (2.14.2)
       formatador (>= 0.2.4)
@@ -348,8 +331,6 @@ GEM
     guard-teaspoon (0.8.0)
       guard (~> 2.2)
       teaspoon (>= 0.8.0)
-    gyoku (1.3.1)
-      builder (>= 2.1.2)
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
@@ -359,10 +340,8 @@ GEM
       rake (>= 10, < 13)
       rubocop (>= 0.50.0)
       sysexits (~> 1.1)
-    httpi (2.4.4)
-      rack
-      socksify
-    i18n (1.6.0)
+    hitimes (1.2.6)
+    i18n (1.5.3)
       concurrent-ruby (~> 1.0)
     icalendar (2.5.2)
       ice_cube (~> 0.16)
@@ -377,7 +356,7 @@ GEM
       railties (>= 3.2.16)
     json (2.1.0)
     kgio (2.11.2)
-    kostya-sigar (2.0.5)
+    kostya-sigar (2.0.1)
     launchy (2.4.3)
       addressable (~> 2.3)
     letter_opener (1.7.0)
@@ -421,9 +400,8 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (5.0.2)
     nio4r (2.3.1)
-    nokogiri (1.10.3)
+    nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
-    nori (2.6.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
@@ -467,13 +445,9 @@ GEM
     pry-rails (0.3.9)
       pry (>= 0.10.4)
     public_suffix (3.0.3)
-    rack (2.0.7)
+    rack (2.0.6)
     rack-test (0.6.3)
       rack (>= 1.0)
-    rack-tracker (1.9.0)
-      activesupport (>= 3.0)
-      rack (>= 1.4)
-      tilt (>= 1.4)
     rails (5.0.7.1)
       actioncable (= 5.0.7.1)
       actionmailer (= 5.0.7.1)
@@ -519,9 +493,9 @@ GEM
     regexp_parser (1.3.0)
     request_store (1.4.1)
       rack (>= 1.4)
-    responders (2.4.1)
-      actionpack (>= 4.2.0, < 6.0)
-      railties (>= 4.2.0, < 6.0)
+    responders (2.4.0)
+      actionpack (>= 4.2.0, < 5.3)
+      railties (>= 4.2.0, < 5.3)
     rollbar (2.15.5)
       multi_json
     rspec (3.8.0)
@@ -580,14 +554,6 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    savon (2.12.0)
-      akami (~> 1.2)
-      builder (>= 2.1.2)
-      gyoku (~> 1.2)
-      httpi (~> 2.3)
-      nokogiri (>= 1.8.1)
-      nori (~> 2.4)
-      wasabi (~> 3.4)
     shellany (0.0.1)
     simple_form (4.1.0)
       actionpack (>= 5.0)
@@ -599,8 +565,7 @@ GEM
     simplecov-html (0.10.2)
     single_test (0.6.0)
       rake
-    socksify (1.7.1)
-    spreadsheet (1.2.0)
+    spreadsheet (1.1.9)
       ruby-ole (>= 1.0)
     spring (2.0.2)
       activesupport (>= 4.2)
@@ -641,7 +606,8 @@ GEM
     thor (0.20.3)
     thread_safe (0.3.6)
     tilt (2.0.8)
-    timers (4.2.0)
+    timers (4.1.2)
+      hitimes
     ttfunk (1.5.1)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
@@ -653,11 +619,8 @@ GEM
       raindrops (~> 0.7)
     uniform_notifier (1.12.1)
     vuejs-rails (1.0.26)
-    warden (1.2.8)
-      rack (>= 2.0.6)
-    wasabi (3.5.0)
-      httpi (~> 2.0)
-      nokogiri (>= 1.4.2)
+    warden (1.2.7)
+      rack (>= 1.0)
     web-console (3.7.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -687,8 +650,8 @@ DEPENDENCIES
   cancancan
   capistrano
   capistrano-bundler
-  capistrano-chruby
   capistrano-rails
+  capistrano-rvm
   capybara
   capybara-email
   chosen-rails
@@ -728,7 +691,6 @@ DEPENDENCIES
   mysql2 (~> 0.4.10)
   nested_form_fields
   nokogiri
-  nucore_kfs!
   oj
   paper_trail
   paperclip
@@ -740,7 +702,6 @@ DEPENDENCIES
   projects!
   pry-byebug
   pry-rails
-  rack-tracker
   rails (= 5.0.7.1)
   rails-controller-testing
   rails-erd
@@ -770,7 +731,6 @@ DEPENDENCIES
   text_helpers
   therubyracer
   thin
-  uconn_cider!
   uglifier (= 4.1.18)
   unicorn
   vuejs-rails (~> 1.0.26)
@@ -779,7 +739,7 @@ DEPENDENCIES
   will_paginate
 
 RUBY VERSION
-   ruby 2.4.5p335
+   ruby 2.4.1p111
 
 BUNDLED WITH
-   2.0.1
+   1.16.6
