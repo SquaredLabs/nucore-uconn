@@ -599,7 +599,6 @@ GEM
     simplecov-html (0.10.2)
     single_test (0.6.0)
       rake
-    socksify (1.7.1)
     spreadsheet (1.2.0)
       ruby-ole (>= 1.0)
     spring (2.0.2)
