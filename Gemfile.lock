@@ -654,9 +654,12 @@ GEM
     vuejs-rails (1.0.26)
     warden (1.2.8)
       rack (>= 2.0.6)
+<<<<<<< HEAD
     wasabi (3.5.0)
       httpi (~> 2.0)
       nokogiri (>= 1.4.2)
+=======
+>>>>>>> Bump devise from 4.5.0 to 4.6.1 (#1871)
     web-console (3.7.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
