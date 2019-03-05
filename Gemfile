@@ -4,8 +4,6 @@ source "https://rubygems.org"
 
 ruby File.open(File.expand_path(".ruby-version", File.dirname(__FILE__))) { |f| f.read.chomp }
 
-git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
-
 ## base
 gem "rails", "5.0.7.1"
 gem "config"
@@ -78,8 +76,6 @@ gem "sanger_sequencing", path: "vendor/engines/sanger_sequencing"
 gem "secure_rooms", path: "vendor/engines/secure_rooms"
 gem "split_accounts", path: "vendor/engines/split_accounts"
 gem "synaccess_connect"
-gem "nucore_kfs", path: "vendor/engines/nucore_kfs"
-gem "uconn_cider", path: "vendor/engines/uconn_cider"
 
 group :development do
   gem "bullet" # Detect N+1s and recommends eager loading
@@ -95,7 +91,7 @@ end
 group :development, :deployment do
   gem "capistrano",         require: false
   gem "capistrano-rails",   require: false
-  gem "capistrano-chruby"   ,  require: false
+  gem "capistrano-rvm",     require: false
   gem "capistrano-bundler", require: false
 
   # These gems are required to support ed25519 SSH keys for deploying via capistrano
@@ -120,15 +116,15 @@ group :development, :test do
 end
 
 group :test do
-  gem "rspec_junit_formatter"
-  gem "ci_reporter_rspec"
-  gem "codeclimate_circle_ci_coverage"
   gem "capybara"
   gem "capybara-email"
+  gem "ci_reporter_rspec"
+  gem "codeclimate_circle_ci_coverage"
   gem "poltergeist"
   gem "rails-controller-testing"
   gem "rspec-collection_matchers"
-  gem "shoulda-matchers", github: "thoughtbot/shoulda-matchers" # https://github.com/thoughtbot/shoulda-matchers/issues/913
+  gem "rspec_junit_formatter"
+  gem "shoulda-matchers"
   gem "single_test"
 end
 
@@ -143,5 +139,4 @@ group :stage, :production do
   gem "rollbar", "2.15.5"
   gem "unicorn", require: false
   gem "whenever", require: false
-  gem "rack-tracker"
 end
