@@ -131,6 +131,7 @@ feature:
   price_policy_requires_note: true
   facility_tile_list: true
   multi_facility_accounts: true
+  facility_directors_can_manage_price_groups: true
 
 split_accounts:
   # Roles are allowed to create Split Accounts
