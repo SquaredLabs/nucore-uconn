@@ -3,7 +3,7 @@ jobs:
   build:
     parallelism: 4
     docker:
-      - image: circleci/ruby:2.4.5-node-browsers-legacy
+      - image: circleci/ruby:2.5.5-node-browsers-legacy
         environment:
           - RAILS_ENV: "test"
           - MYSQL_USER: root
@@ -20,18 +20,12 @@ jobs:
       # Bundle
       - restore_cache:
           keys:
-            - gem-cache-{{ arch }}--{{ .Branch }}-{{ checksum "Gemfile.lock" }}--{{ checksum ".ruby-version" }}
-            - gem-cache-{{ arch }}--{{ .Branch }}--{{ checksum ".ruby-version" }}
-            - gem-cache--{{ checksum ".ruby-version" }}
-
-      - run:
-          name: Install Correct Bundler Version
-          command: gem install bundler
+            - gem-cache-{{ arch }}--{{ .Branch }}-{{ checksum "Gemfile.lock" }}-{{ checksum ".ruby-version" }}
 
       - run: bundle install --path vendor/bundle
 
       - save_cache:
-          key: gem-cache-{{ arch }}--{{ .Branch }}-{{ checksum "Gemfile.lock" }}--{{ checksum ".ruby-version" }}
+          key: gem-cache-{{ arch }}--{{ .Branch }}-{{ checksum "Gemfile.lock" }}-{{ checksum ".ruby-version" }}
           paths:
             - vendor/bundle
 
