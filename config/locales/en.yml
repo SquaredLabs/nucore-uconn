@@ -73,6 +73,7 @@ en:
     manage_short: Manage
     my_tab: My %{model}
     transactions: My Transactions
+    transactions_in_review: My Transactions In Review (%{count})
     notices: Notices
     support: Support
 
