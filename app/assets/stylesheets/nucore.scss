@@ -318,6 +318,10 @@ th.currency {
   width: 50%;
 }
 
+.full-width {
+  width: 100%;
+}
+
 /* Price policies */
 
 p.per-minute {
@@ -365,6 +369,10 @@ ul.inline > li, ol.inline > li {
 textarea.wide {
   width: 99%;
   height: 4em;
+}
+
+select.tall {
+  height: 20rem;
 }
 
 .compressed-inline {
