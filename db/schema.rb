@@ -240,17 +240,6 @@ ActiveRecord::Schema.define(version: 2020_02_24_215210) do
     t.index ["facility_id"], name: "index_journals_on_facility_id"
   end
 
-  create_table "ledger_entries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.integer "batch_sequence_number"
-    t.integer "document_number"
-    t.datetime "exported_on"
-    t.integer "kfs_status"
-    t.integer "journal_row_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["journal_row_id"], name: "index_ledger_entries_on_journal_row_id"
-  end
-
   create_table "log_events", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "loggable_type"
     t.integer "loggable_id"
@@ -896,7 +885,6 @@ ActiveRecord::Schema.define(version: 2020_02_24_215210) do
   add_foreign_key "journal_rows", "accounts"
   add_foreign_key "journal_rows", "journals"
   add_foreign_key "journal_rows", "order_details"
-  add_foreign_key "ledger_entries", "journal_rows"
   add_foreign_key "log_events", "users"
   add_foreign_key "nu_product_cert_requirements", "nu_safety_certificates"
   add_foreign_key "nu_product_cert_requirements", "products"
