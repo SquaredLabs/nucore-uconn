@@ -162,6 +162,7 @@ ActiveRecord::Schema.define(version: 2020_02_24_215210) do
     t.text "short_description", null: false
     t.text "address"
     t.string "phone_number"
+    t.string "thumbnail_content_type"
     t.string "fax_number"
     t.string "email"
     t.string "journal_mask", limit: 50, null: false

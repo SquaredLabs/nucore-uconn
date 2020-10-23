@@ -88,7 +88,7 @@ feature:
   limit_short_description: true
   order_assignment_notifications: true
   password_update: true
-  expense_accounts: true
+  expense_accounts: false
   edit_accounts: true
   suspend_accounts: true
   product_specific_contacts: true
