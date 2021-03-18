@@ -3,6 +3,55 @@
 #   # Task goes here
 # end
 
+desc "generate export file(s) for KFS collector for open journals"
+task :kfs_collector_export_cron, [:export_dir] => :environment do |_t, args|
+  export_dir = args.export_dir
+  puts("Exporting to #{export_dir}")
+
+  kfs_bot = User.find_or_create_by(
+    username: NucoreKfs::KFS_BOT_ACCOUNT_USERNAME,
+    email: NucoreKfs::KFS_BOT_ACCOUNT_EMAIL,
+    first_name: "KFS",
+    last_name: "Bot"
+  )
+
+  open_journals = Journal.where(is_successful: nil, kfs_upload_generated: false)
+
+  # we must track the batch sequence number to tell KFS
+  batch_sequence_number = 1
+  open_journals.each do |journal|
+
+    # builds rows for passing to CollectorExport. This could use some refactoring
+    rows_to_export = journal.journal_rows
+
+    # Get the director for the facility so we can set them as the receipient of the KFS Collector upload confirmation email
+    facility_director = journal.facility.user_roles.where(role: 'Facility Director').first.user
+
+    # Generate the file and write it
+    exporter = NucoreKfs::CollectorExport.new(
+      batch_sequence_number,
+      facility_director.email,
+      facility_director.name
+    )
+    export_content = exporter.generate_export_file_new(rows_to_export)
+
+    file_name = "journal-#{journal.id}.data"
+    export_file = File.join(export_dir, file_name);
+    File.open(export_file, "w") { |file| file.write export_content }
+
+    puts("Exported a Journal to #{export_file}")
+
+    batch_sequence_number += 1
+    journal.kfs_upload_generated = true
+    journal.reference = file_name
+    journal.updated_by = kfs_bot.id
+    # journal.save!
+
+    # TODO: how do we get files moved to the SFTP folder? Should it be managed
+    # by rails or should it be a separate cron script?
+  end
+end
+
 desc "dry run - test generate an export file for the KFS Collector"
 task :kfs_collector_export_dry_run, [:export_file_path] => :environment do |_t, args|
   export_file = args.export_file_path
@@ -24,7 +73,7 @@ task :kfs_collector_export_dry_run, [:export_file_path] => :environment do |_t, 
     end
   end
 
-  exporter = NucoreKfs::CollectorExport.new
+  exporter = NucoreKfs::CollectorExport.new(1)
   export_content = exporter.generate_export_file_new(rows_to_export)
 
   File.open(export_file, "w") { |file| file.write export_content }
@@ -66,7 +115,7 @@ task :kfs_collector_export, [:export_file_path] => :environment do |_t, args|
     end
   end
 
-  exporter = NucoreKfs::CollectorExport.new
+  exporter = NucoreKfs::CollectorExport.new(1)
   export_content = exporter.generate_export_file_new(rows_to_export)
   # export_content = exporter.generate_export_file(rows_to_export)
 
