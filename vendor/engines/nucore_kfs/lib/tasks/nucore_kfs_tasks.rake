@@ -45,7 +45,16 @@ task :kfs_collector_export_cron, [:export_dir] => :environment do |_t, args|
     journal.kfs_upload_generated = true
     journal.reference = file_name
     journal.updated_by = kfs_bot.id
-    # journal.save!
+    journal.save!
+
+    # We can only do a max of 9 files per day. This is a constraint of the KFS Collector
+    # system. We simply stop after 9. The rest will be picked up on the next day this cron
+    # job runs
+    MAX_BATCHES_PER_DAY = 9
+    if (batch_sequence_number > MAX_BATCHES_PER_DAY)
+      puts("Maximum batch sequence number of #{MAX_BATCHES_PER_DAY} reached for the day. Stopping.")
+      break
+    end
 
     # TODO: how do we get files moved to the SFTP folder? Should it be managed
     # by rails or should it be a separate cron script?
