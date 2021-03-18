@@ -6,7 +6,8 @@ module NucoreKfs
     def initialize
 
       # TODO: consider refactoring these to configuration/settings
-      wsdl = 'https://kuali.uconn.edu/kfs-prd/remoting/chartOfAccountsInquiry?wsdl'
+      # wsdl = 'https://kuali.uconn.edu/kfs-uat/remoting/chartOfAccountsInquiry?wsdl'
+      wsdl = 'https://kualinp.uconn.edu/kfs-uat/remoting/chartOfAccountsInquiry?wsdl'
       # required workaround: override WSDL namespace since the targetNamespace
       # specified by the WSDL does not match what the SOAP endpoint expects
       namespace = 'http://kfs.kuali.org/core/v5_0'
@@ -140,18 +141,22 @@ module NucoreKfs
       end
     end
 
-    def upsert_account(kfs_soap_data)
+    def build_account_number(kfs_soap_data)
+      # build the account_number in the correct format
+      object_code = '6610' # always 6610 for the accounts paying
+      kfs_account_number = kfs_soap_data[:account_number]
+      account_number = "KFS-#{kfs_account_number}-#{object_code}"
+    end
 
+    def upsert_account(kfs_soap_data)
       account_name = kfs_soap_data[:account_name]
       puts("account_name = #{account_name}")
 
       account_status = kfs_soap_data[:status]
       account_open = account_status == "OPEN"
 
-      # build the account_number in the correct format
-      object_code = '6610' # always 6610 for the accounts paying
-      kfs_account_number = kfs_soap_data[:account_number]
-      account_number = "KFS-#{kfs_account_number}-#{object_code}"
+      account_number = build_account_number(kfs_soap_data)
+
       puts("account_number = #{account_number} | account_open = #{account_open} (status = #{account_status})")
 
       # user roles
@@ -197,6 +202,7 @@ module NucoreKfs
           account.suspend
           puts("suspending account: #{account_number}")
         end
+
       end
     end
 
