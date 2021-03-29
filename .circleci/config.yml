@@ -24,7 +24,7 @@ jobs:
           keys:
             - gem-cache-{{ arch }}--{{ .Branch }}-{{ checksum "Gemfile.lock" }}-{{ checksum ".ruby-version" }}
 
-      - run: gem install bundler
+      - run: gem install bundler -v 2.1.4
       - run: bundle install --path vendor/bundle
 
       - save_cache:
