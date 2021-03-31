@@ -20,7 +20,7 @@ module NucoreKfs
       @ref_field_2 = @order_detail.id.to_s
             
       # where to take the money (the purchaser)
-      debit_account_string = get_debit_account(@order_detail)
+      debit_account_string = get_debit_account(journal_row)
       # where to send the money (the facility)
       credit_account_string = @product.facility_account.account_number
             
@@ -57,8 +57,9 @@ module NucoreKfs
       create_collector_row_string_helper(false)
     end
 
-    def get_debit_account(order_detail_row)
-      account_number = order_detail_row.account.account_number
+    def get_debit_account(journal_row)
+      account = Account.find(journal_row.account_id)
+      account_number = account.account_number
       is_uch = account_number.match(/^UCH-(?<acct_num>\d{0,7})/)
       is_kfs = account_number.match(/^KFS-(?<acct_num>\d{0,7})-(?<obj_code>\d{4})$/)
       if is_uch

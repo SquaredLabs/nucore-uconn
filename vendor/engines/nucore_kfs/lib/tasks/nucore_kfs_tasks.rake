@@ -43,9 +43,10 @@ task :kfs_collector_export, [:export_file_path] => :environment do |_t, args|
   open_journals.each do |journal|
     journal.journal_rows.each do |journal_row|
       od = journal_row.order_detail
-      next unless journal_row.order_detail
+      next unless journal_row.order_detail_id
       prod = journal_row.order_detail.product
-      aan_out = od.account.account_number
+      account = Account.find(journal_row.account_id)
+      aan_out = account.account_number
       fan_out = prod.facility_account.account_number
 
       aan_match = aan_out.match(/^KFS-(?<acct_num>\d{0,7})-(?<obj_code>\d{4})$/)
@@ -53,7 +54,7 @@ task :kfs_collector_export, [:export_file_path] => :environment do |_t, args|
 
       if !aan_match
         # logger.info("for id #{od.id}: order account not a kfs account: #{aan_out}")
-        puts("for id #{od.id}: order account not a kfs account: #{aan_out}")
+        puts("for id #{journal_row.id}: order account not a kfs account: #{aan_out}")
       elsif !fan_match
         # logger.info("for id #{od.id}: recharge account not a kfs account: #{fan_out}")
         puts("for id #{od.id}: recharge account not a kfs account: #{fan_out}")

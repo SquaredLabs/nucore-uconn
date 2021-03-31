@@ -6,6 +6,21 @@ RSpec.describe NucoreKfs::CollectorTransaction, type: :service do
   let(:facility) { FactoryBot.create(:setup_kfs_facility) }
   let(:kfs_account) { FactoryBot.create(:nufs_account, :with_account_owner, owner: user, account_number: "KFS-7777777-4444") }
   let(:uch_account) { FactoryBot.create(:nufs_account, :with_account_owner, owner: user, account_number: "UCH-7777777-4444") }
+  let(:invalid_account) { FactoryBot.create(:nufs_account, :with_account_owner, owner: user, account_number: "INVALID-7777777-4444") }
+
+  context "in open journal with invalid account" do
+    let(:transaction) { described_class.new(journal_rows.first) }
+    let(:journal) { FactoryBot.create(:kfs_journal, facility: facility) }
+    let(:order_detail) { place_and_complete_kfs_item_order(user, facility, invalid_account, true) }
+    let(:journal_rows) {
+        journal.create_journal_rows!([order_detail])
+        journal.journal_rows
+    }
+
+    it "handles invalid account types" do
+      expect{transaction.get_debit_account(journal_rows.first)}.to raise_error("unknown account type: INVALID-7777777-4444")
+    end
+  end
   
   context "in open journal with KFS account" do
     let(:transaction) { described_class.new(journal_rows.first) }
@@ -20,16 +35,6 @@ RSpec.describe NucoreKfs::CollectorTransaction, type: :service do
       debit_account = transaction.get_debit_account(journal_rows.first.order_detail)
 
       expect(debit_account).to eq("KFS-7777777-4444")
-    end
-
-    it "handles invalid account types" do
-      account = double
-      order_detail = double
-
-      allow(account).to receive(:account_number).and_return("INVALID-7777777-4444")
-      allow(order_detail).to receive(:account).and_return(account)
-
-      expect{transaction.get_debit_account(order_detail)}.to raise_error("unknown account type: INVALID-7777777-4444")
     end
 
     it "can convert journal row to transaction" do
