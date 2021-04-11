@@ -6,6 +6,9 @@ ruby File.open(File.expand_path(".ruby-version", File.dirname(__FILE__))) { |f| 
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
+## mimemagic fix
+gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
+
 ## base
 gem "rails", "5.2.4.4"
 gem "sprockets", "< 4" # Temporarily lock as we upgrade
