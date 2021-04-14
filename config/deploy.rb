@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-lock "~> 3.14.0"
+lock "~> 3.14.1"
 
+set :chruby_ruby, "ruby-2.5.5"
 set :application, "nucore"
 
 set :bundle_without, "#{fetch(:bundle_without)} oracle"
@@ -19,4 +20,3 @@ set :linked_dirs, fetch(:linked_dirs, []).concat(
   %w(bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/files),
 )
 
-set :chruby_ruby, "ruby-2.5.5"

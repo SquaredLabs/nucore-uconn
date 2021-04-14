@@ -110,7 +110,57 @@ module NucoreKfs
       return header_record.join("")
     end
 
-    def generate_export_file(journal_rows)
+    def create_collector_transactions_from_journal_rows(journal_rows)
+      collector_transactions = []
+      # An increasing sequential number beginning with zero. Should be the same for each Debit(D) and Credit(C) entry.
+      document_number = 0
+
+      journal_rows.each do |journal_row|
+        next unless journal_row.order_detail
+
+        collector_transactions.append(CollectorTransaction.new(journal_row))
+
+        # handle any counters or aggregates
+        document_number += 1
+      end
+      collector_transactions
+    end
+
+    def create_general_ledger_entries_from_transactions(transactions)
+      entries = ""
+      records = 0
+      file_amt = 0
+      transactions.each do |transaction|
+        entries << transaction.create_debit_row_string() << "\n"
+        entries << transaction.create_credit_row_string() << "\n"
+        records += 2 # we must count both the credit and debit row
+        # the way collector works, we must "double cunt"
+        file_amt += transaction.get_transaction_dollar_amount() * 2
+      end
+      return Hash[:entries => entries, :records => records, :file_amt => file_amt]
+    end
+
+    def generate_export_file_new(journal_rows)
+      output = ""
+
+      header_content = generate_export_header()
+      output << header_content << "\n"
+
+      collector_transactions = create_collector_transactions_from_journal_rows(journal_rows)
+      transaction_entries = create_general_ledger_entries_from_transactions(collector_transactions)
+      output << transaction_entries[:entries]
+
+      records = transaction_entries[:records]
+      file_amt = transaction_entries[:file_amt]
+      trailer_record = generate_trailer_record(records, file_amt)
+      output << trailer_record << "\n"
+
+      return output
+    end
+
+    # This function is deprecated. We are keeping it here for reference and testing because it is
+    # important that we can ensure the new way of generating files keeps the previous spec.
+    def generate_export_file_deprecated(journal_rows)
 
       output = ""
 
@@ -134,6 +184,7 @@ module NucoreKfs
           date = od.created_at.strftime("%Y-%m-%d")
           aan_out = od.account.account_number
           fan_out = prod.facility_account.account_number
+
 
           raise "not a kfs account: #{aan_out}" unless aan_match = aan_out.match(/^KFS-(?<acct_num>\d{0,7})-(?<obj_code>\d{4})$/)
           raise "not a kfs account: #{fan_out}" unless fan_match = fan_out.match(/^KFS-(?<acct_num>\d{0,7})-(?<obj_code>\d{4})$/)
@@ -252,6 +303,14 @@ module NucoreKfs
           }
       end
 
+      trailer_record = generate_trailer_record(records, file_amt)
+
+      output << trailer_record << "\n"
+
+      return output
+    end
+
+    def generate_trailer_record(records, file_amt)
       # Generate the "Trailed Record"
       # see the "Trailer Record (One per file):" section of the "Collector Batch Format" document
       trailer_record_type = "TL"
@@ -279,10 +338,7 @@ module NucoreKfs
         # Must include decimal point, for example 00000000000000114.00
         file_amt.truncate(2).to_s.rjust(20, "0"),
       ]
-
-      output << trailer_record.join("") << "\n"
-
-      return output
+      return trailer_record.join("")
     end
   end
 end
