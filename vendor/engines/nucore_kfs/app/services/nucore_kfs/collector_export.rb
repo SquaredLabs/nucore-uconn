@@ -6,7 +6,7 @@ module NucoreKfs
     # Please reference the "Collector Batch Format" document for a complete
     # understanding of all the fields are formatting used here.
 
-    def initialize
+    def initialize(batch_sequence_number, email = "joseph.oshea@uconn.edu", contact_person = "Joseph OShea")
       @now = DateTime.now
       # TODO: There is a fiscal_year_begins setting that we should read and use here.
       # For now, we are just hardcoding the start of UConn's FY: July 1
@@ -28,17 +28,17 @@ module NucoreKfs
       # right now we hardcode to 1, but if we plan to transmit mulitple times in a given day,
       # we need to change this to increment this number accordingly.
       # WARNING: since this field is limited to 1 character wide, this cannot be greater than 9
-      @batch_sequence_number = 1
+      @batch_sequence_number = batch_sequence_number
 
       # "Email Address" - To be supplied by responsible party – preferably a department email
       # This email receives the "callbacks" to indicate success/failure for the transactions
       # sent. We set this to an email we control so that we may automatically parse those
       # emails and react accordingly.
-      @email = "joseph.oshea@uconn.edu"
+      @email = email
 
       # "Department Contact Person" - To be supplied by responsible party
       # This should be set to someone in the team
-      @department_contact_person = "Joseph OShea"
+      @department_contact_person = contact_person
 
       # "Department" - To be supplied by responsible party
       # Always set this to CORE, since that is who we are
@@ -118,7 +118,7 @@ module NucoreKfs
       journal_rows.each do |journal_row|
         next unless journal_row.order_detail
 
-        collector_transactions.append(CollectorTransaction.new(journal_row))
+        collector_transactions.append(CollectorTransaction.new(journal_row, document_number))
 
         # handle any counters or aggregates
         document_number += 1

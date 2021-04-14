@@ -8,7 +8,7 @@ RSpec.describe NucoreKfs::CollectorExport, type: :service do
   let(:uch_account) { FactoryBot.create(:nufs_account, :with_account_owner, owner: user, account_number: "UCH-7777777-4444") }
 
   context "in open journal with KFS account" do
-    let(:exporter) { described_class.new }
+    let(:exporter) { described_class.new(1) }
     let(:journal) { FactoryBot.create(:kfs_journal, facility: facility) }
     let(:order_detail) { place_and_complete_kfs_item_order(user, facility, kfs_account, true) }
     let(:journal_rows) {
@@ -49,6 +49,32 @@ RSpec.describe NucoreKfs::CollectorExport, type: :service do
         expect(header.size).to eq(172)
         expect(header[10..14].blank?).to be true
         expect(header[170..171].blank?).to be true
+      end
+
+      it "has the default email in the header when none is specified" do
+        header = exporter.generate_export_header()
+        expect(header.include? "joseph.oshea@uconn.edu").to be true
+      end
+
+      it "has the default name in the header when none is specified" do
+        header = exporter.generate_export_header()
+        expect(header.include? "Joseph OShea").to be true
+      end
+
+      context "with an email and name provided" do
+        let(:email) { "foo@bar.com" }
+        let(:name) { "Mary Brown" }
+        let(:exporter) { described_class.new(1, email, name) }
+
+        it "has the specified email in the header" do
+          header = exporter.generate_export_header()
+          expect(header.include? email).to be true
+        end
+
+        it "has the specified name in the header" do
+          header = exporter.generate_export_header()
+          expect(header.include? name).to be true
+        end
       end
 
       it "has correct number of general ledger entries" do
@@ -103,7 +129,7 @@ RSpec.describe NucoreKfs::CollectorExport, type: :service do
   end
 
   context "in open journal with UCH account" do
-    let(:exporter) { described_class.new }
+    let(:exporter) { described_class.new(1) }
     let(:journal) { FactoryBot.create(:kfs_journal, facility: facility) }
     let(:order_detail) { place_and_complete_kfs_item_order(user, facility, uch_account, true) }
     let(:journal_rows) {

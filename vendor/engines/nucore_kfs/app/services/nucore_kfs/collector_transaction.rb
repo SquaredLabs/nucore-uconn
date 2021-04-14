@@ -8,7 +8,8 @@ module NucoreKfs
     # Please reference the "Collector Batch Format" document for a complete
     # understanding of all the fields are formatting used here.
 
-    def initialize(journal_row)
+    def initialize(journal_row, document_number)
+      @document_number = document_number
       @order_detail = journal_row.order_detail
       # TODO: move some of this logic to the model?
       @transaction_date = @order_detail.created_at.strftime("%Y-%m-%d")
