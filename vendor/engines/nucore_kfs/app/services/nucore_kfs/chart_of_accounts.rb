@@ -170,7 +170,7 @@ module NucoreKfs
           user.create_default_price_group!
           user
         rescue ActiveRecord::RecordInvalid
-          puts("Received ActiveRecord::RecordInvalid.")
+          puts("Received ActiveRecord::RecordInvalid. Netid: #{netid} | email: #{user_info.mail}")
           nil
         end
       end
@@ -200,9 +200,6 @@ module NucoreKfs
         return
       end
       puts("account_number = #{account_number} | account_owner = #{account_owner.id} | business_admin = #{business_admin.id}")
-
-      # FIXME: temp for analysis
-      return
 
       account = Account.find_by(account_number: account_number)
       # if the account is not in our DB yet, and it is 'OPEN', then build a record for it
