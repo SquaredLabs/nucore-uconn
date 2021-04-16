@@ -51,6 +51,15 @@ module NucoreKfs
       end
     end
 
+    def makeNucoreUserFromLdapUser(ldap_user)
+      User.new(
+        :username => ldap_user.uid,
+        :first_name => ldap_user.givenname,
+        :last_name => ldap_user.sn,
+        :email => ldap_user.mail,
+      )
+    end
+
   end
 
 end
