@@ -7,6 +7,9 @@ module NucoreKfs
     def service_username_lookup(username)
       lookup = NucoreKfs::UconnUserLookup.new
       ldap_user = lookup.findByNetId(username)
+      if ldap_user.nil?
+        return nil
+      end
       lookup.makeNucoreUserFromLdapUser(ldap_user)
     end
 

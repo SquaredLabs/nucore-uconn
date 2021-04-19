@@ -16,14 +16,28 @@ module NucoreKfs
     def initialize
       # Load config
       config_file_path = Rails.root.join("config", "ldap.yml")
+
+      unless File.exist?(config_file_path)
+        @ldap = nil
+        @bindSuccess = false
+        return
+      end
+
       parsed = ERB.new(File.read(config_file_path)).result
       yaml = YAML.safe_load(parsed, [], [], true) || {}
       config = yaml.fetch(Rails.env, {})
+
       host = config.fetch("host", "")
       port = config.fetch("port", "")
       admin_user = config.fetch("admin_user", "")
       admin_password = config.fetch("admin_password", "")
       @treebase = config.fetch("base", "")
+
+      if host.empty?
+        @ldap = nil
+        @bindSuccess = false
+        return
+      end
 
       # init LDAP connection
       ldap = Net::LDAP.new(:encryption => {:method => :start_tls})
@@ -41,6 +55,10 @@ module NucoreKfs
     end
 
     def findByNetId(netid)
+      if @ldap.nil?
+        return nil
+      end
+
       filter = Net::LDAP::Filter.eq('uid', netid)
       results = @ldap.search( :base => @treebase, :filter => filter )
       entry = results.first

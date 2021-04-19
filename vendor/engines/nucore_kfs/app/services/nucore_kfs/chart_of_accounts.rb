@@ -157,6 +157,9 @@ module NucoreKfs
       else
         puts("Did not find user with NetID #{netid} in database. Creating from LDAP...")
         user_info = @user_lookup.findByNetId(netid)
+        if user_info.nil?
+          return nil
+        end
         puts("LDAP found user with NetID #{netid} (email: #{user_info.mail}).")
 
         begin

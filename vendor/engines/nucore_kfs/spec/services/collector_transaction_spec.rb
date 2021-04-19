@@ -9,7 +9,7 @@ RSpec.describe NucoreKfs::CollectorTransaction, type: :service do
   let(:invalid_account) { FactoryBot.create(:nufs_account, :with_account_owner, owner: user, account_number: "INVALID-7777777-4444") }
 
   context "in open journal with invalid account" do
-    let(:transaction) { described_class.new(journal_rows.first) }
+    let(:transaction) { described_class.new(journal_rows.first, 1) }
     let(:journal) { FactoryBot.create(:kfs_journal, facility: facility) }
     let(:order_detail) { place_and_complete_kfs_item_order(user, facility, invalid_account, true) }
     let(:journal_rows) {
