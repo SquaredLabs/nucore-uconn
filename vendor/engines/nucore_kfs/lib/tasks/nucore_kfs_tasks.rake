@@ -36,7 +36,7 @@ task :kfs_collector_export_cron, [:export_dir] => :environment do |_t, args|
     export_content = exporter.generate_export_file_new(rows_to_export)
 
     file_name = "journal-#{journal.id}.data"
-    export_file = File.join(export_dir, file_name);
+    export_file = File.join(export_dir, file_name)
     File.open(export_file, "w") { |file| file.write export_content }
 
     puts("Exported a Journal to #{export_file}")
@@ -168,24 +168,18 @@ end
 
 desc "LDAP test"
 task :ldap_test, [:csv_file_path] => :environment do |_t, args|
-  # csv_file_path = args.csv_file_path
-
   config_file_path = Rails.root.join("config", "ldap.yml")
   parsed = ERB.new(File.read(config_file_path)).result
-  # safe_load(yaml, whitelist_classes, whitelist_symbols, allow_aliases)
   yaml = YAML.safe_load(parsed, [], [], true) || {}
   config = yaml.fetch(Rails.env, {})
 
   host = config.fetch("host", "")
-  puts("host = #{host}")
-
   ldap = Net::LDAP.new(:encryption => {:method => :start_tls})
   ldap.host = config.fetch("host", "")
   ldap.port = config.fetch("port", "")
 
   admin_user = config.fetch("admin_user", "")
   admin_password = config.fetch("admin_password", "")
-  puts("admin_password = #{admin_password}")
   
   ldap.auth admin_user, admin_password
 
