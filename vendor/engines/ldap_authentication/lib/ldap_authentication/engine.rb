@@ -11,7 +11,9 @@ module LdapAuthentication
       if LdapAuthentication.configured?
         User.send(:devise, :ldap_authenticatable)
         User.send(:include, LdapAuthentication::UserExtension)
-        UsersController.send(:include, LdapAuthentication::UsersControllerExtension)
+        # UConn overrides this with our own customization in the nucore_kfs engine
+        # TODO: is there a better way to disable this and ensure the nucore_kfs engine takes precedence?
+        # UsersController.send(:include, LdapAuthentication::UsersControllerExtension)
       end
     end
 

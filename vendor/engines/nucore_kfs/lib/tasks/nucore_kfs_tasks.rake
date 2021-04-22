@@ -36,7 +36,7 @@ task :kfs_collector_export_cron, [:export_dir] => :environment do |_t, args|
     export_content = exporter.generate_export_file_new(rows_to_export)
 
     file_name = "journal-#{journal.id}.data"
-    export_file = File.join(export_dir, file_name);
+    export_file = File.join(export_dir, file_name)
     File.open(export_file, "w") { |file| file.write export_content }
 
     puts("Exported a Journal to #{export_file}")
@@ -163,4 +163,41 @@ task :uch_load_banner_index, [:csv_file_path] => :environment do |_t, args|
   csv_file_path = args.csv_file_path
   loader = NucoreKfs::BannerUpserter.new
   loader.parse_file(csv_file_path)
+end
+
+
+desc "LDAP test"
+task :ldap_test, [:csv_file_path] => :environment do |_t, args|
+  config_file_path = Rails.root.join("config", "ldap.yml")
+  parsed = ERB.new(File.read(config_file_path)).result
+  yaml = YAML.safe_load(parsed, [], [], true) || {}
+  config = yaml.fetch(Rails.env, {})
+
+  host = config.fetch("host", "")
+  ldap = Net::LDAP.new(:encryption => {:method => :start_tls})
+  ldap.host = config.fetch("host", "")
+  ldap.port = config.fetch("port", "")
+
+  admin_user = config.fetch("admin_user", "")
+  admin_password = config.fetch("admin_password", "")
+  
+  ldap.auth admin_user, admin_password
+
+  treebase = config.fetch("base", "")
+
+  if ldap.bind
+    # authentication succeeded
+    puts("bind succeeded ")
+
+    f1 = Net::LDAP::Filter.eq('uid', 'jpo08003')
+    entries = ldap.search(:base => treebase, :filter => f1)
+
+    ldap.search( :base => treebase, :filter => f1 ) do |entry|
+      puts "DN: #{entry.dn}"
+    end
+  else
+    # authentication failed
+    puts("failed ")
+    puts(ldap.get_operation_result)
+  end
 end
