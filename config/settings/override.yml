@@ -1,1 +1,4 @@
 # use this file for school-specific settings overrides
+
+kfs:
+  export_dir: /home/deploy/kfs-collector-exports
