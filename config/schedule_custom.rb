@@ -11,3 +11,7 @@
 every :day, at: "1:30am", roles: [:db] do
   rake "kfs_chart_of_accounts"
 end
+
+every :day, at: "12:30am", roles: [:db] do
+  rake "\"kfs_collector_export_cron[#{Settings.kfs.export_dir}]\""
+end

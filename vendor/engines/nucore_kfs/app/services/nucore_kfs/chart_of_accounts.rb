@@ -30,6 +30,8 @@ module NucoreKfs
       )
 
       @created_by_user = @kfs_bot
+
+      @user_lookup = UconnUserLookup.new
     end
 
     def upsert_accounts_for_subfund(subfund_id)
@@ -148,6 +150,35 @@ module NucoreKfs
       account_number = "KFS-#{kfs_account_number}-#{object_code}"
     end
 
+    def find_or_create_user_by_netid(netid)
+      user = User.find_by(username: netid)
+      if !user.nil?
+        user
+      else
+        puts("Did not find user with NetID #{netid} in database. Creating from LDAP...")
+        user_info = @user_lookup.findByNetId(netid)
+        if user_info.nil?
+          return nil
+        end
+        puts("LDAP found user with NetID #{netid} (email: #{user_info.mail}).")
+
+        begin
+          user = User.new(
+            :username => user_info.uid,
+            :first_name => user_info.givenname,
+            :last_name => user_info.sn,
+            :email => user_info.mail,
+          )
+          user.save!
+          user.create_default_price_group!
+          user
+        rescue ActiveRecord::RecordInvalid
+          puts("Received ActiveRecord::RecordInvalid. Netid: #{netid} | email: #{user_info.mail}")
+          nil
+        end
+      end
+    end
+
     def upsert_account(kfs_soap_data)
       account_name = kfs_soap_data[:account_name]
       puts("account_name = #{account_name}")
@@ -164,8 +195,8 @@ module NucoreKfs
       business_admin_netid = kfs_soap_data[:fiscal_officer_identifier]
       puts("account_number = #{account_number} | account_owner_netid = #{account_owner_netid} | business_admin_netid = #{business_admin_netid}")
 
-      account_owner = User.find_by(username: account_owner_netid)
-      business_admin = User.find_by(username: business_admin_netid)
+      account_owner = find_or_create_user_by_netid(account_owner_netid)
+      business_admin = find_or_create_user_by_netid(business_admin_netid)
 
       if account_owner == nil || business_admin == nil
         puts("Found nil for account_owner or business_admin. This account will not be added.")
