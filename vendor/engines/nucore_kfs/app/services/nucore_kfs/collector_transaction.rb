@@ -2,6 +2,9 @@ module NucoreKfs
 
   class CollectorTransaction
     require "date"
+    require "money"
+
+    attr_accessor :document_number, :transaction_dollar_amount
 
     @@UCH_GLOBAL_DEBIT_ACCOUNT = 'KFS-4643530-1390'
 
@@ -9,6 +12,8 @@ module NucoreKfs
     # understanding of all the fields are formatting used here.
 
     def initialize(journal_row, document_number)
+      Money.locale_backend = nil
+
       @document_number = document_number
       @order_detail = journal_row.order_detail
       # TODO: move some of this logic to the model?
@@ -16,7 +21,7 @@ module NucoreKfs
       @product = @order_detail.product
       @facility_initials = @order_detail.facility.name.scan(/([A-Z])/).join
       @description = "|CORE|#{@facility_initials}|#{@transaction_date}|#{@product.name}"[0..39]
-      @transaction_dollar_amount = @order_detail.actual_cost.truncate(2).to_s("F")
+      @transaction_dollar_amount = Money.from_amount(@order_detail.actual_cost, "USD")
       @ref_field_1 = @order_detail.order_id.to_s
       @ref_field_2 = @order_detail.id.to_s
             
@@ -47,7 +52,7 @@ module NucoreKfs
     end
 
     def get_transaction_dollar_amount()
-      return @transaction_dollar_amount.to_f
+      return @transaction_dollar_amount
     end
 
     def create_credit_row_string()
@@ -115,7 +120,7 @@ module NucoreKfs
         " " * 1,
         # "Transaction Dollar Amount"
         # Amount to be credited or debited, must include decimal point, for example 00000000000000114.00
-        @transaction_dollar_amount.rjust(20, "0"),
+        @transaction_dollar_amount.format(symbol: '').rjust(20, "0"),
         # "Debit/Credit code"
         # "C" for Credit, "D" for Debit
         debit_credit_code.ljust(1),
