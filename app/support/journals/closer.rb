@@ -62,8 +62,10 @@ class Journals::Closer
     end
   end
 
-  def after_success
-    # no-op by default. Can be hooked into by engines to provide school-specific behavior
+  module Overridable
+    def after_success
+      # no-op by default. Can be hooked into by engines to provide school-specific behavior
+    end
   end
 
   def rollback_on_fail

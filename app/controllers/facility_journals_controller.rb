@@ -12,8 +12,6 @@ class FacilityJournalsController < ApplicationController
   before_action :check_billing_access
   before_action :init_journals, except: :create
 
-  cattr_accessor(:journal_closer) { Journals::Closer }
-
   layout lambda {
     action_name.in?(%w(new)) ? "two_column_head" : "two_column"
   }
@@ -63,7 +61,7 @@ class FacilityJournalsController < ApplicationController
   def update
     @pending_journal = @journal
 
-    action = journal_closer.new(@pending_journal, params.fetch(:journal, empty_params).merge(updated_by: session_user.id))
+    action = Journals::Closer.new(@pending_journal, params.fetch(:journal, empty_params).merge(updated_by: session_user.id))
 
     if action.perform params[:journal_status]
       flash[:notice] = I18n.t "controllers.facility_journals.update.notice"

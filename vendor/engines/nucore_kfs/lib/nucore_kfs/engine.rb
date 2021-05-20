@@ -10,6 +10,7 @@ require "nucore_kfs/users_controller_extension"
 
 module NucoreKfs
   class Engine < ::Rails::Engine
+    require "nucore_kfs/journal_closer"
 
     config.to_prepare do
       ViewHook.add_hook "facility_journals.downloads",
@@ -21,13 +22,7 @@ module NucoreKfs
                         "uch_banner_csv_partial"
 
       UsersController.send(:include, NucoreKfs::UsersControllerExtension)
-
-    end
-
-    config.after_initialize do
-      require "nucore_kfs/journal_closer"
-      # this will inherit from Journals::Closer like so -> class NucoreKfs::Journals::Closer < ::Journals::Closer
-      FacilityJournalsController.journal_closer = NucoreKfs::JournalCloser
+      Journals::Closer.send(:include, NucoreKfs::JournalsCloserExtension)
     end
 
     initializer :append_migrations do |app|
