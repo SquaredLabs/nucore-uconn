@@ -1,9 +1,7 @@
 module NucoreKfs
 
   class UchBannerExport
-
     include Rails.application.routes.url_helpers
-
 
     def initialize(uch_journal_rows)
       @uch_journal_rows = uch_journal_rows
