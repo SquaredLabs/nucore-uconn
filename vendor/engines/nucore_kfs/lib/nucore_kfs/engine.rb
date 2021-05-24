@@ -7,10 +7,10 @@
 # require "nucore_kfs/uch_banner_export"
 
 require "nucore_kfs/users_controller_extension"
+require "nucore_kfs/facility_journals_controller_extension"
 
 module NucoreKfs
   class Engine < ::Rails::Engine
-    require "nucore_kfs/journal_closer"
 
     config.to_prepare do
       ViewHook.add_hook "facility_journals.downloads",
@@ -22,7 +22,7 @@ module NucoreKfs
                         "uch_banner_csv_partial"
 
       UsersController.send(:include, NucoreKfs::UsersControllerExtension)
-      Journals::Closer.send(:include, NucoreKfs::JournalsCloserExtension)
+      FacilityJournalsController.send(:include, NucoreKfs::FacilityJournalsControllerExtension)
     end
 
     initializer :append_migrations do |app|

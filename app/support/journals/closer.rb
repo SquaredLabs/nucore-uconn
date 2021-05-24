@@ -47,24 +47,14 @@ class Journals::Closer
 
   def mark_as_succeeded
     if journal.update_attributes(params.merge(is_successful: true))
-      result = journal.order_details.update_all(
+      journal.order_details.update_all(
         state: "reconciled",
         order_status_id: OrderStatus.reconciled.id,
         reconciled_at: reconciled_at,
         updated_at: Time.current,
       )
-      if result
-        after_success
-      end
-      result
     else
       false
-    end
-  end
-
-  module Overridable
-    def after_success
-      # no-op by default. Can be hooked into by engines to provide school-specific behavior
     end
   end
 

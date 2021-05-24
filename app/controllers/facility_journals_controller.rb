@@ -2,9 +2,16 @@
 
 class FacilityJournalsController < ApplicationController
 
+  module Overridable
+    def after_success(journal)
+      # no-op by default. Can be hooked into by engines to provide school-specific behavior
+    end
+  end
+
   include DateHelper
   include CSVHelper
   include OrderDetailsCsvExport
+  include Overridable
 
   admin_tab     :all
   before_action :authenticate_user!
@@ -64,6 +71,7 @@ class FacilityJournalsController < ApplicationController
     action = Journals::Closer.new(@pending_journal, params.fetch(:journal, empty_params).merge(updated_by: session_user.id))
 
     if action.perform params[:journal_status]
+      after_success(@pending_journal)
       flash[:notice] = I18n.t "controllers.facility_journals.update.notice"
       redirect_to facility_journals_path(current_facility)
     else
