@@ -16,7 +16,96 @@ RSpec.describe NucoreKfs::CollectorExport, type: :service do
       journal.journal_rows
     }
 
+
     context "collector" do
+      let(:transaction1) { FactoryBot.build(:collector_transaction, journal_row: journal_rows[0]) }
+
+      # This example comes from a set of orders we found that led to a bug when summing them up as floats
+      # If someone has a better idea on how to test for this regression, I welcome suggestions!
+      let(:order_values_with_float_sum_bug) {
+        [
+          120.0,
+          139.0,
+          180.0,
+          58.0,
+          116.0,
+          180.0,
+          1112.0,
+          464.0,
+          960.0,
+          30.0,
+          116.0,
+          240.0,
+          158.67,
+          116.0,
+          120.0,
+          120.0,
+          348.0,
+          720.0,
+          180.0,
+          158.67,
+          116.0,
+          120.0,
+          120.0,
+          232.0,
+          240.0,
+          1112.0,
+          232.0,
+          480.0,
+          60.0,
+          60.0,
+          1668.0,
+          696.0,
+          1440.0,
+          116.0,
+          120.0,
+          420.0,
+          58.0,
+          60.0,
+          58.0,
+          60.0,
+          120.0,
+          660.0,
+          116.0,
+          120.0,
+          142.0,
+          960.0,
+          232.0,
+          480.0,
+          174.0,
+          360.0,
+          278.0,
+          240.0,
+          406.0,
+          420.0,
+          232.0,
+          240.0,
+          240.0,
+          58.0,
+          120.0,
+          40.0,
+          50.0,
+          49.5,
+          190.01,
+          60.0,
+          40.0,
+          40.0,
+          60.0,
+          40.0,
+          130.01,
+          50.0,
+          80.0,
+          190.01,
+          160.01,
+          140.01,
+          210.01,
+          230.01,
+          190.01,
+          130.01,
+          50.0,
+          70.0
+        ]
+      }
 
       it "handles invalid journal rows" do
         journal_row = double
@@ -37,6 +126,18 @@ RSpec.describe NucoreKfs::CollectorExport, type: :service do
 
       it "can export journal" do
         expect(exporter.generate_export_file_new(journal_rows)).to_not be_nil
+      end
+
+      it "sums up the file amount correctly" do
+        transactions = order_values_with_float_sum_bug.map { |x| FactoryBot.build(
+            :collector_transaction,
+            journal_row: journal_rows[0],
+            transaction_dollar_amount: Money.from_amount(x, "USD")
+          )
+        }
+        transaction_entries = exporter.create_general_ledger_entries_from_transactions(transactions)
+        file_amt = transaction_entries[:file_amt]
+        expect(file_amt.to_s).to eq("41803.86")
       end
     end
 
@@ -112,7 +213,7 @@ RSpec.describe NucoreKfs::CollectorExport, type: :service do
   
       it "has correct trailer format" do
         records = 2
-        file_amt = 200
+        file_amt = Money.from_amount(200, "USD")
         trailer_record = exporter.generate_trailer_record(records, file_amt)
 
         expect(trailer_record.lines.count).to eq(1)
@@ -207,7 +308,7 @@ RSpec.describe NucoreKfs::CollectorExport, type: :service do
   
       it "has correct trailer format" do
         records = 2
-        file_amt = 200
+        file_amt = Money.from_amount(200, "USD")
         trailer_record = exporter.generate_trailer_record(records, file_amt)
 
         expect(trailer_record.lines.count).to eq(1)

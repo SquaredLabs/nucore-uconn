@@ -19,4 +19,5 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 5.2.3"
   s.add_dependency 'savon', '~> 2.12.0'
+  s.add_dependency "money", '~> 6.16.0'
 end

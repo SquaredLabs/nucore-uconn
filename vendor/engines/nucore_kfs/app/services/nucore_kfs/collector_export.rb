@@ -2,6 +2,7 @@ module NucoreKfs
 
   class CollectorExport
     require "date"
+    require "money"
 
     # Please reference the "Collector Batch Format" document for a complete
     # understanding of all the fields are formatting used here.
@@ -127,15 +128,17 @@ module NucoreKfs
     end
 
     def create_general_ledger_entries_from_transactions(transactions)
+      Money.locale_backend = nil
       entries = ""
       records = 0
-      file_amt = 0
+      file_amt = Money.from_cents(0, "USD")
       transactions.each do |transaction|
         entries << transaction.create_debit_row_string() << "\n"
         entries << transaction.create_credit_row_string() << "\n"
         records += 2 # we must count both the credit and debit row
-        # the way collector works, we must "double cunt"
-        file_amt += transaction.get_transaction_dollar_amount() * 2
+        dollar_amt = transaction.get_transaction_dollar_amount()
+        # the way collector works, we must "double count" for the file_amt sum
+        file_amt += dollar_amt * 2
       end
       return Hash[:entries => entries, :records => records, :file_amt => file_amt]
     end
@@ -195,7 +198,7 @@ module NucoreKfs
           doc_from_char = "C"
           doc_num_as_str = doc_num.to_s
           desc = "#{facility_initials}|#{prod.name}|#{date}"[0..39]
-          dollar_amt = od.actual_cost.truncate(2)
+          dollar_amt = od.actual_cost.format(symbol: '')
           tx_dollar_amt = dollar_amt.to_s("F")
 
           puts("actual_cost | dollar_amt | tx_dollar_amt = #{od.actual_cost} | #{dollar_amt} | #{tx_dollar_amt}")
@@ -336,7 +339,7 @@ module NucoreKfs
         # Money format (2 decimal places) right aligned, leading zeroes, no commas
         # Total amount credited plus total amount debited. Cannot be zero.
         # Must include decimal point, for example 00000000000000114.00
-        file_amt.truncate(2).to_s.rjust(20, "0"),
+        file_amt.format(symbol: '').to_s.rjust(20, "0"),
       ]
       return trailer_record.join("")
     end
