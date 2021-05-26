@@ -7,7 +7,7 @@
 # require "nucore_kfs/uch_banner_export"
 
 require "nucore_kfs/users_controller_extension"
-
+require "nucore_kfs/facility_journals_controller_extension"
 
 module NucoreKfs
   class Engine < ::Rails::Engine
@@ -22,6 +22,7 @@ module NucoreKfs
                         "uch_banner_csv_partial"
 
       UsersController.send(:include, NucoreKfs::UsersControllerExtension)
+      FacilityJournalsController.send(:include, NucoreKfs::FacilityJournalsControllerExtension)
     end
 
     initializer :append_migrations do |app|
