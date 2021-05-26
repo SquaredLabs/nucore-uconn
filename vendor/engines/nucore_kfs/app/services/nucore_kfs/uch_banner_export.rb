@@ -18,7 +18,6 @@ module NucoreKfs
     end
 
     def to_csv()
-
       headers = ['Order ID', 'Line Item ID', 'Order URL', 'Banner Index #', 'Amount', 'Transaction Date']
   
       CSV.generate(headers: true) do |csv|
